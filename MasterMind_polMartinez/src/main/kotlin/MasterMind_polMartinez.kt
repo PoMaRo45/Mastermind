@@ -1,8 +1,9 @@
 //Projecte MasterMind
 //Author:Pol Martínez
-import java.util.*
+const val ANSI_RED = "\u001B[31m"
 fun main() {
 
+   val vermell = "\u001b[31m"
    println { "!! MasterMind ¡¡\n".bold}
    println { ("Abans de començar a jugar farem una breu explicació de com funciona el joc:").underline }
    println("El joc consisteix en endivinar la possició en la qual es troben els colors. Hi han 4 possicions en les quals poden haver-hi colors i 5 diferents colors: ")
