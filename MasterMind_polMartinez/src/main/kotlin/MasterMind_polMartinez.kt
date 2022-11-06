@@ -32,7 +32,7 @@ fun instrucciones(){
            "en cas de que volguis corregir algo abans d'enviar la jugada haurás d'escriure RETURN sino CONFIRM.")
 
 }
-fun finalWin(){
+fun finalWin():String{
    val scanner=Scanner(System.`in`).useLocale(Locale.UK)
    println()
    println("\n Has encertat enhorabona!! \n " +
@@ -48,6 +48,7 @@ fun finalWin(){
       "GAME"-> print("mic")
       "NEW"-> print("mic")
    }
+   return(finalWin)
 }
 fun finalLose(){
    val scanner=Scanner(System.`in`).useLocale(Locale.UK)
@@ -128,56 +129,59 @@ fun main() {
    }
    //--------------------------------------------------------------------------------------------
    // RONDAS DE PARTIDA -------------------------------------------------------------------------
-   for (i in 1..5){
-      var correctSequencia=0
-      var userSequence= arrayOf("","","","")
-      println("RONDA $i: ")
-      for (i in 0..3){
-         var userSelection = scanner.next()
-         if (userSelection!="vermell" && userSelection!="verd" && userSelection!="groc" && userSelection!="blau" && userSelection!="lila"){
-            do {
-               println("Introdueix un color vàlid")
-               userSelection = scanner.next()
-            } while (userSelection!="vermell" && userSelection!="verd" && userSelection!="groc" && userSelection!="blau" && userSelection!="lila")
-         }
-         userSequence[i]=userSelection
-      }
-      for (i in 0..3){
-         colores(userSequence[i])
-      }
-      println("Es aquesta la seqüéncia que volias posar? \n Escriu SI / NO")
-      var sequenceConfirmation=scanner.next()
-      if(sequenceConfirmation!="SI" && sequenceConfirmation!="NO"){
+   do{
+      for (i in 1..5){
+         var correctSequencia=0
+         var userSequence= arrayOf("","","","")
          do {
-            println("Introdueix una de les opcions")
-            sequenceConfirmation=scanner.next()
-         }while (sequenceConfirmation!="SI" && sequenceConfirmation!="NO")
-      }
-      when(sequenceConfirmation)
-      println()
-      for (i in 0..3){
-         var position=0
-         if (userSequence[i] == sequencia[i]) position=2
-         else if (userSequence[i] in sequencia) position = 1
-         else position = 0
-         when (position){
-            0-> print ("×")
-            1-> print ("Ø")
-            2-> print ("O")
+            println("RONDA $i: ")
+            for (i in 0..3){
+               var userSelection = scanner.next()
+               if (userSelection!="vermell" && userSelection!="verd" && userSelection!="groc" && userSelection!="blau" && userSelection!="lila"){
+                  do {
+                     println("Introdueix un color vàlid")
+                     userSelection = scanner.next()
+                  } while (userSelection!="vermell" && userSelection!="verd" && userSelection!="groc" && userSelection!="blau" && userSelection!="lila")
+               }
+               userSequence[i]=userSelection
+            }
+            for (i in 0..3){
+               colores(userSequence[i])
+            }
+            println("\n Es aquesta la seqüéncia que volias posar? \n Escriu SI / NO")
+            var sequenceConfirmation=scanner.next()
+            if(sequenceConfirmation!="SI" && sequenceConfirmation!="NO"){
+               do {
+                  println("Introdueix una de les opcions")
+                  sequenceConfirmation=scanner.next()
+               }while (sequenceConfirmation!="SI" && sequenceConfirmation!="NO")
+            }
+         }while (sequenceConfirmation!="SI")
+         println()
+         for (i in 0..3){
+            var position=0
+            if (userSequence[i] == sequencia[i]) position=2
+            else if (userSequence[i] in sequencia) position = 1
+            else position = 0
+            when (position){
+               0-> print ("×")
+               1-> print ("Ø")
+               2-> print ("O")
+            }
          }
+         for (i in 0..3){
+            if (userSequence[i]==sequencia[i]) correctSequencia+=1
+         }
+         if (correctSequencia==4) {
+            finalWin()
+            break
+         }
+         if (i==5){
+            finalLose()
+            break
+         }
+         println()
       }
-      for (i in 0..3){
-         if (userSequence[i]==sequencia[i]) correctSequencia+=1
-      }
-      if (correctSequencia==4) {
-         finalWin()
-         break
-      }
-      if (i==5){
-         finalLose()
-         break
-      }
-      println()
-   }
+   }while (finalWin()!="") //TO DO: acabar este while con finalWin i finalLose
    //-----------------------------------------------------------------------------------------
 }
