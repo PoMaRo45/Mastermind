@@ -8,6 +8,7 @@ const val PURPLE = "\u001B[35m"
 const val BLUE = "\u001B[34m"
 const val GREEN = "\u001B[32m"
 const val YELLOW = "\u001B[33m"
+const val BROWN = "\u001B[38;5;52m"
 fun instrucciones(){
    println ("!! MasterMind ¡¡\n")
    println ("Abans de començar a jugar farem una breu explicació de com funciona el joc:")
@@ -31,6 +32,57 @@ fun instrucciones(){
            "en cas de que volguis corregir algo abans d'enviar la jugada haurás d'escriure RETURN sino CONFIRM.")
 
 }
+fun finalWin(){
+   val scanner=Scanner(System.`in`).useLocale(Locale.UK)
+   println()
+   println("\n Has encertat enhorabona!! \n " +
+           "Per veure l'historial de la partida escriu GAME si vols tornar a jugar NEW, si vols sortir EXIT.")
+   var finalWin = scanner.next()
+   if(finalWin!="GAME" && finalWin != "NEW" && finalWin != "EXIT"){
+      do {
+         println("Introdueix una de les opcions")
+         finalWin=scanner.next()
+      }while (finalWin!="GAME" && finalWin != "NEW" && finalWin != "EXIT")
+   }
+   when (finalWin){
+      "GAME"-> print("mic")
+      "NEW"-> print("mic")
+   }
+}
+fun finalLose(){
+   val scanner=Scanner(System.`in`).useLocale(Locale.UK)
+   println()
+   println("\n Has perdut :( \n " +
+           "Per veure l'historial de la partida escriu GAME si vols tornar a jugar NEW, si vols sortir EXIT.")
+   var finalLose = scanner.next()
+   if(finalLose!="GAME" && finalLose != "NEW" && finalLose != "EXIT"){
+      do {
+         println("Introdueix una de les opcions")
+         finalLose=scanner.next()
+      }while (finalLose!="GAME" && finalLose != "NEW" && finalLose != "EXIT")
+   }
+   when (finalLose){
+      "GAME"-> print("mic")
+      "NEW"-> print("mic")
+   }
+}
+fun colores(n:String){
+   if (n=="vermell"){
+      print( RED + " o " + RESET )
+   }
+   else if(n=="groc"){
+      print( YELLOW + " o " + RESET )
+   }
+   else if (n == "blau"){
+      print( BLUE + " o " + RESET )
+   }
+   else if (n == "lila"){
+      print( PURPLE + " o " + RESET )
+   }
+   else if (n == "verd"){
+      print( GREEN + " o " + RESET )
+   }
+}
 fun main() {
    val scanner=Scanner(System.`in`).useLocale(Locale.UK)
    println("Benvingut a Mastermind \n Per començar a jugar introdueix CONTINUE, si no saps jugar introdueix HELP")
@@ -53,15 +105,15 @@ fun main() {
       }
    }while (start!="CONTINUE" && !instructions)
 
-   //GENERADOR DE LA SEQUENCIA---------------------------------------
+   //GENERADOR DE LA SEQUENCIA-------------------------------------------------------------------------------
    var colores = arrayOf("vermell","verd", "groc", "blau", "lila")
-   val rnd = (0..4).random()
+   var rnd = (0..4).random()
    var sequencia = arrayOf<String>("","","","")
    for (i in 0..3){
-      val rnd = (0..4).random()
+      rnd = (0..4).random()
       if (colores[rnd]=="used"){
          do {
-            val rnd = (0..4).random()
+            rnd = (0..4).random()
             sequencia[i]= colores[rnd]
          }while (colores[rnd]=="used")
          colores[rnd]= "used"
@@ -71,12 +123,14 @@ fun main() {
          colores[rnd]= "used"
       }
    }
-   //-----------------------------------------------
-   // RONDAS DE PARTIDA -----------
-   val correctSequencia=false
+   for (i in 0..3){
+      println(sequencia[i])
+   }
+   //--------------------------------------------------------------------------------------------
+   // RONDAS DE PARTIDA -------------------------------------------------------------------------
    for (i in 1..5){
+      var correctSequencia=0
       var userSequence= arrayOf("","","","")
-      var position = 0
       println("RONDA $i: ")
       for (i in 0..3){
          var userSelection = scanner.next()
@@ -88,8 +142,42 @@ fun main() {
          }
          userSequence[i]=userSelection
       }
-//      if (userSelection == sequencia[i]) position=2
-//      else if (userSelection in sequencia) position = 1
-//      else position = 0
+      for (i in 0..3){
+         colores(userSequence[i])
+      }
+      println("Es aquesta la seqüéncia que volias posar? \n Escriu SI / NO")
+      var sequenceConfirmation=scanner.next()
+      if(sequenceConfirmation!="SI" && sequenceConfirmation!="NO"){
+         do {
+            println("Introdueix una de les opcions")
+            sequenceConfirmation=scanner.next()
+         }while (sequenceConfirmation!="SI" && sequenceConfirmation!="NO")
+      }
+      when(sequenceConfirmation)
+      println()
+      for (i in 0..3){
+         var position=0
+         if (userSequence[i] == sequencia[i]) position=2
+         else if (userSequence[i] in sequencia) position = 1
+         else position = 0
+         when (position){
+            0-> print ("×")
+            1-> print ("Ø")
+            2-> print ("O")
+         }
+      }
+      for (i in 0..3){
+         if (userSequence[i]==sequencia[i]) correctSequencia+=1
+      }
+      if (correctSequencia==4) {
+         finalWin()
+         break
+      }
+      if (i==5){
+         finalLose()
+         break
+      }
+      println()
    }
+   //-----------------------------------------------------------------------------------------
 }
