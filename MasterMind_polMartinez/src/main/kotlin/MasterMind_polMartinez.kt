@@ -32,11 +32,17 @@ fun instrucciones(){
            "en cas de que volguis corregir algo abans d'enviar la jugada haurás d'escriure RETURN sino CONFIRM.")
 
 }
-fun finalWin():String{
+fun finalWin(n:Boolean):String{
    val scanner=Scanner(System.`in`).useLocale(Locale.UK)
    println()
-   println("\n Has encertat enhorabona!! \n " +
-           "Per veure l'historial de la partida escriu GAME si vols tornar a jugar NEW, si vols sortir EXIT.")
+   if (n){
+      println("\n Has encertat enhorabona!! \n " +
+              "Per veure l'historial de la partida escriu GAME si vols tornar a jugar NEW, si vols sortir EXIT.")
+   }
+   else {
+      println("\n Has perdut :( \n " +
+              "Per veure l'historial de la partida escriu GAME si vols tornar a jugar NEW, si vols sortir EXIT.")
+   }
    var finalWin = scanner.next()
    if(finalWin!="GAME" && finalWin != "NEW" && finalWin != "EXIT"){
       do {
@@ -44,28 +50,7 @@ fun finalWin():String{
          finalWin=scanner.next()
       }while (finalWin!="GAME" && finalWin != "NEW" && finalWin != "EXIT")
    }
-   when (finalWin){
-      "GAME"-> print("mic")
-      "NEW"-> print("mic")
-   }
    return(finalWin)
-}
-fun finalLose(){
-   val scanner=Scanner(System.`in`).useLocale(Locale.UK)
-   println()
-   println("\n Has perdut :( \n " +
-           "Per veure l'historial de la partida escriu GAME si vols tornar a jugar NEW, si vols sortir EXIT.")
-   var finalLose = scanner.next()
-   if(finalLose!="GAME" && finalLose != "NEW" && finalLose != "EXIT"){
-      do {
-         println("Introdueix una de les opcions")
-         finalLose=scanner.next()
-      }while (finalLose!="GAME" && finalLose != "NEW" && finalLose != "EXIT")
-   }
-   when (finalLose){
-      "GAME"-> print("mic")
-      "NEW"-> print("mic")
-   }
 }
 fun colores(n:String){
    if (n=="vermell"){
@@ -130,9 +115,11 @@ fun main() {
    //--------------------------------------------------------------------------------------------
    // RONDAS DE PARTIDA -------------------------------------------------------------------------
    do{
+      var restart=""
+      var userSequence: Array<String>
       for (i in 1..5){
          var correctSequencia=0
-         var userSequence= arrayOf("","","","")
+         userSequence= arrayOf("","","","")
          do {
             println("RONDA $i: ")
             for (i in 0..3){
@@ -159,7 +146,7 @@ fun main() {
          }while (sequenceConfirmation!="SI")
          println()
          for (i in 0..3){
-            var position=0
+            var position: Int
             if (userSequence[i] == sequencia[i]) position=2
             else if (userSequence[i] in sequencia) position = 1
             else position = 0
@@ -173,15 +160,15 @@ fun main() {
             if (userSequence[i]==sequencia[i]) correctSequencia+=1
          }
          if (correctSequencia==4) {
-            finalWin()
+            restart = finalWin(true)
             break
          }
          if (i==5){
-            finalLose()
+            restart = finalWin(false)
             break
          }
          println()
       }
-   }while (finalWin()!="") //TO DO: acabar este while con finalWin i finalLose
+   }while (restart!="EXIT" && restart!="EXIT") //TO DO: acabar este while con finalWin i finalLose
    //-----------------------------------------------------------------------------------------
 }
