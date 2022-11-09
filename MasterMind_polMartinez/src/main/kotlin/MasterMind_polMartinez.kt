@@ -8,7 +8,7 @@ const val PURPLE = "\u001B[35m"
 const val BLUE = "\u001B[34m"
 const val GREEN = "\u001B[32m"
 const val YELLOW = "\u001B[33m"
-const val BROWN = "\u001B[38;5;52m"
+const val BROWNBACK = "\u001B[48;5;52m"
 fun instrucciones(){
    println ("!! MasterMind ¡¡\n")
    println ("Abans de començar a jugar farem una breu explicació de com funciona el joc:")
@@ -31,6 +31,9 @@ fun instrucciones(){
    print("Per simplificar la jugavilitat abans de confirmar la jugada t'apareixerà una representació amb els colors introduits,\n" +
            "en cas de que volguis corregir algo abans d'enviar la jugada haurás d'escriure RETURN sino CONFIRM.")
 
+}
+fun interficie(){
+println(BROWNBACK + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
 }
 fun finalWin(n:Boolean):String{
    val scanner=Scanner(System.`in`).useLocale(Locale.UK)
@@ -71,6 +74,7 @@ fun colores(n:String){
 }
 fun main() {
    val scanner=Scanner(System.`in`).useLocale(Locale.UK)
+   interficie()
    println("Benvingut a Mastermind \n Per començar a jugar introdueix CONTINUE, si no saps jugar introdueix HELP")
    do {
       var instructions=false
@@ -169,6 +173,6 @@ fun main() {
          }
          println()
       }
-   }while (restart!="EXIT" && restart!="EXIT") //TO DO: acabar este while con finalWin i finalLose
+   }while (restart!="EXIT" && restart!="EXIT")
    //-----------------------------------------------------------------------------------------
 }
