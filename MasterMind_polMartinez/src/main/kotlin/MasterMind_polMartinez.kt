@@ -8,7 +8,7 @@ const val PURPLE = "\u001B[35m"
 const val BLUE = "\u001B[34m"
 const val GREEN = "\u001B[32m"
 const val YELLOW = "\u001B[33m"
-const val BROWNBACK = "\u001B[48;5;52m"
+const val FANTASY = "\u001B[48;5;240m"
 fun instrucciones(){
    println ("!! MasterMind ¡¡\n")
    println ("Abans de començar a jugar farem una breu explicació de com funciona el joc:")
@@ -32,8 +32,48 @@ fun instrucciones(){
            "en cas de que volguis corregir algo abans d'enviar la jugada haurás d'escriure RETURN sino CONFIRM.")
 
 }
-fun interficie(){
-println(BROWNBACK + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
+fun interficie(userName:String, times:Int, userComprovationsList:MutableList<String>, userSelectionsList:MutableList<String>){
+   var iterator=0
+   println(FANTASY + "\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
+   println(FANTASY + "\t" + RESET + "\t\t\t\t\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
+   println(FANTASY + "\t" + RESET + "\t\t\t\t\t$userName\t\t\t\t\t" + FANTASY + "\t" + RESET)
+   println(FANTASY + "\t" + RESET + "\t\t\t\t\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
+   println(FANTASY + "\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
+
+   for (i in 1..times){
+      println(FANTASY + "\t" + RESET + "\t\t\t" +FANTASY +"\t"+ RESET + "\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
+      print(FANTASY + "\t" + RESET)
+      print("  ")
+      when(i){
+         1-> iterator=0
+         2-> iterator=4
+         3-> iterator=8
+         4-> iterator=12
+         5-> iterator=16
+      }
+      for (i in 0..3){
+         print("${ userComprovationsList[iterator] } ")
+         iterator+=1
+      }
+      when(i){
+         1-> iterator=0
+         2-> iterator=4
+         3-> iterator=8
+         4-> iterator=12
+         5-> iterator=16
+      }
+      print("  ")
+      print(FANTASY +" \t"+ RESET )
+      for (i in 0 .. 3){
+         print("  ")
+         colores(userSelectionsList[iterator])
+         print("  ")
+         iterator+=1
+      }
+      println( FANTASY + "\t" + RESET)
+      println(FANTASY + "\t" + RESET + "\t\t\t" +FANTASY +"\t"+ RESET + "\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
+      println(FANTASY + "\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
+   }
 }
 fun finalWin(n:Boolean):String{
    val scanner=Scanner(System.`in`).useLocale(Locale.UK)
@@ -55,7 +95,7 @@ fun finalWin(n:Boolean):String{
    }
    return(finalWin)
 }
-fun colores(n:String){
+fun colores(n:String){ //TO DO: canviar colores por emotes
    if (n=="vermell"){
       print( RED + " o " + RESET )
    }
@@ -74,8 +114,12 @@ fun colores(n:String){
 }
 fun main() {
    val scanner=Scanner(System.`in`).useLocale(Locale.UK)
-   interficie()
-   println("Benvingut a Mastermind \n Per començar a jugar introdueix CONTINUE, si no saps jugar introdueix HELP")
+   var userSelectionsList: MutableList<String> = mutableListOf()
+   var userComprovationsList: MutableList<String> = mutableListOf()
+   var times =0
+   println("Introdueix un username de 5 caracters:")
+   val userName= scanner.next()
+   println("Benvingut $userName a Mastermind \n Per començar a jugar introdueix CONTINUE, si no saps jugar introdueix HELP")
    do {
       var instructions=false
       val start=scanner.next()
@@ -97,7 +141,7 @@ fun main() {
 
    //GENERADOR DE LA SEQUENCIA-------------------------------------------------------------------------------
    var colores = arrayOf("vermell","verd", "groc", "blau", "lila")
-   var rnd = (0..4).random()
+   var rnd: Int
    var sequencia = arrayOf<String>("","","","")
    for (i in 0..3){
       rnd = (0..4).random()
@@ -119,6 +163,7 @@ fun main() {
    //--------------------------------------------------------------------------------------------
    // RONDAS DE PARTIDA -------------------------------------------------------------------------
    do{
+      var userSelectionsList: MutableList<String> = mutableListOf()
       var restart=""
       var userSequence: Array<String>
       for (i in 1..5){
@@ -128,13 +173,14 @@ fun main() {
             println("RONDA $i: ")
             for (i in 0..3){
                var userSelection = scanner.next()
-               if (userSelection!="vermell" && userSelection!="verd" && userSelection!="groc" && userSelection!="blau" && userSelection!="lila"){
+               if (userSelection!="vermell" && userSelection!="verd" && userSelection!="groc" && userSelection!="blau" && userSelection!="lila" || userSelection in userSequence){
                   do {
-                     println("Introdueix un color vàlid")
+                     println("Introdueix un color vàlid o que no hagis introduit a la ronda")
                      userSelection = scanner.next()
-                  } while (userSelection!="vermell" && userSelection!="verd" && userSelection!="groc" && userSelection!="blau" && userSelection!="lila")
+                  } while (userSelection!="vermell" && userSelection!="verd" && userSelection!="groc" && userSelection!="blau" && userSelection!="lila" || userSelection in userSequence)
                }
                userSequence[i]=userSelection
+               userSelectionsList.add(userSelection)
             }
             for (i in 0..3){
                colores(userSequence[i])
@@ -155,14 +201,17 @@ fun main() {
             else if (userSequence[i] in sequencia) position = 1
             else position = 0
             when (position){
-               0-> print ("×")
-               1-> print ("Ø")
-               2-> print ("O")
+               0-> userComprovationsList.add("×")
+               1-> userComprovationsList.add("Ø")
+               2-> userComprovationsList.add("O")
             }
          }
          for (i in 0..3){
             if (userSequence[i]==sequencia[i]) correctSequencia+=1
          }
+         println()
+         times+=1
+         interficie(userName, times, userComprovationsList, userSelectionsList)
          if (correctSequencia==4) {
             restart = finalWin(true)
             break
@@ -171,7 +220,7 @@ fun main() {
             restart = finalWin(false)
             break
          }
-         println()
+
       }
    }while (restart!="EXIT" && restart!="EXIT")
    //-----------------------------------------------------------------------------------------
