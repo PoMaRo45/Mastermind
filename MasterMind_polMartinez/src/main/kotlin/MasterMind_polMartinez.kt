@@ -13,18 +13,18 @@ fun instrucciones(){
    println ("!! MasterMind ¡¡\n")
    println ("Abans de començar a jugar farem una breu explicació de com funciona el joc:")
    println("El joc consisteix en endivinar la possició en la qual es troben els colors. Hi han 4 possicions en les quals poden haver-hi colors i 5 diferents colors: ")
-   print(RED + "\t\t\to" + RESET +" (vermell), ")
-   print (GREEN + "o" + RESET + " (verd), ")
-   print (BLUE + "o" + RESET + " (blau), ")
-   print (YELLOW + "o" + RESET + " (groc) i ")
-   println (PURPLE + "o" + RESET + " (lila).")
+   print("\t\t\t\uD83D\uDD34  (vermell), ")
+   print ("\uD83D\uDFE2  (verd), ")
+   print ("\uD83D\uDD35  (blau), ")
+   print ("\uD83D\uDFE1 (groc) i ")
+   println ("\uD83D\uDFE3 (lila).")
    println("")
    println ("Una vegada feta la introducció passem a les normes i funcionament:")
    println(""" - En la secuencia de colors no es trobará cap color repetit.
  - Per cada posició tindras un comprovador el qual tindra 3 senyals difrents per que sapigues si vas en bon camí: 
-            - × Aquest simból a la posició d'un color significa que aquest color no es troba a la sequencia.
-            - Ø Aquest simból a la posició d'un color significa que aquest color es troba a la sequencia, pero no a la possició que has escollit.
-            - O Aquest simból a la posició d'un color significa que aquest color es troba a la sequencia i a la possició que has escollit.
+            - ❎ Aquest simból a la posició d'un color significa que aquest color no es troba a la sequencia.
+            - 🔁 Aquest simból a la posició d'un color significa que aquest color es troba a la sequencia, pero no a la possició que has escollit.
+            - ✅ Aquest simból a la posició d'un color significa que aquest color es troba a la sequencia i a la possició que has escollit.
  -La partida consisteix de 6 torns, en cas de no arribar a completar la seqüéncia haurás perdut.
  -Haurás d'introduir el nom dels colors en minuscules.
  """)
@@ -34,45 +34,35 @@ fun instrucciones(){
 }
 fun interficie(userName:String, times:Int, userComprovationsList:MutableList<String>, userSelectionsList:MutableList<String>){
    var iterator=0
-   println(FANTASY + "\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
-   println(FANTASY + "\t" + RESET + "\t\t\t\t\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
-   println(FANTASY + "\t" + RESET + "\t\t\t\t\t$userName\t\t\t\t\t" + FANTASY + "\t" + RESET)
-   println(FANTASY + "\t" + RESET + "\t\t\t\t\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
-   println(FANTASY + "\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
+   println(FANTASY + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
+   println(FANTASY + "\t" + RESET + "\t\t\t\t\t\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
+   println(FANTASY + "\t" + RESET + "\t\t\t\t\t$userName\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
+   println(FANTASY + "\t" + RESET + "\t\t\t\t\t\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
+   println(FANTASY + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
 
-   for (i in 1..times){
-      println(FANTASY + "\t" + RESET + "\t\t\t" +FANTASY +"\t"+ RESET + "\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
+   for (i in 0 until times){
+      println(FANTASY + "\t" + RESET + "\t\t\t\t" +FANTASY +"\t"+ RESET + "\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
       print(FANTASY + "\t" + RESET)
       print("  ")
-      when(i){
-         1-> iterator=0
-         2-> iterator=4
-         3-> iterator=8
-         4-> iterator=12
-         5-> iterator=16
-      }
+      iterator=i*4
       for (i in 0..3){
          print("${ userComprovationsList[iterator] } ")
          iterator+=1
       }
-      when(i){
-         1-> iterator=0
-         2-> iterator=4
-         3-> iterator=8
-         4-> iterator=12
-         5-> iterator=16
-      }
-      print("  ")
+      iterator=i*4
+      print("\t")
       print(FANTASY +" \t"+ RESET )
+      print("  ")
       for (i in 0 .. 3){
          print("  ")
          colores(userSelectionsList[iterator])
-         print("  ")
+         print(" ")
          iterator+=1
       }
-      println( FANTASY + "\t" + RESET)
-      println(FANTASY + "\t" + RESET + "\t\t\t" +FANTASY +"\t"+ RESET + "\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
-      println(FANTASY + "\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
+      print("\t")
+      println(FANTASY + " \t" + RESET)
+      println(FANTASY + "\t" + RESET + "\t\t\t\t" +FANTASY +"\t"+ RESET + "\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
+      println(FANTASY + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
    }
 }
 fun finalWin(n:Boolean):String{
@@ -80,36 +70,28 @@ fun finalWin(n:Boolean):String{
    println()
    if (n){
       println("\n Has encertat enhorabona!! \n " +
-              "Per veure l'historial de la partida escriu GAME si vols tornar a jugar NEW, si vols sortir EXIT.")
+              "Si vols tornar a jugar NEW, si vols sortir EXIT.")
    }
    else {
       println("\n Has perdut :( \n " +
-              "Per veure l'historial de la partida escriu GAME si vols tornar a jugar NEW, si vols sortir EXIT.")
+              "Si vols tornar a jugar NEW, si vols sortir EXIT.")
    }
    var finalWin = scanner.next()
-   if(finalWin!="GAME" && finalWin != "NEW" && finalWin != "EXIT"){
+   if(finalWin != "NEW" && finalWin != "EXIT"){
       do {
          println("Introdueix una de les opcions")
          finalWin=scanner.next()
-      }while (finalWin!="GAME" && finalWin != "NEW" && finalWin != "EXIT")
+      }while (finalWin != "NEW" && finalWin != "EXIT")
    }
    return(finalWin)
 }
-fun colores(n:String){ //TO DO: canviar colores por emotes
-   if (n=="vermell"){
-      print( RED + " o " + RESET )
-   }
-   else if(n=="groc"){
-      print( YELLOW + " o " + RESET )
-   }
-   else if (n == "blau"){
-      print( BLUE + " o " + RESET )
-   }
-   else if (n == "lila"){
-      print( PURPLE + " o " + RESET )
-   }
-   else if (n == "verd"){
-      print( GREEN + " o " + RESET )
+fun colores(n:String){
+   when(n){
+      "vermell" -> print("\uD83D\uDD34 ")
+      "groc" -> print( "\uD83D\uDFE1 ")
+      "blau" -> print( "\uD83D\uDD35 ")
+      "lila" -> print( "\uD83D\uDFE3 ")
+      "verd" -> print( "\uD83D\uDFE2 ")
    }
 }
 fun main() {
@@ -163,8 +145,8 @@ fun main() {
    //--------------------------------------------------------------------------------------------
    // RONDAS DE PARTIDA -------------------------------------------------------------------------
    do{
-      var userSelectionsList: MutableList<String> = mutableListOf()
-      var restart=""
+      userSelectionsList = mutableListOf()
+      var restart = ""
       var userSequence: Array<String>
       for (i in 1..5){
          var correctSequencia=0
@@ -172,6 +154,7 @@ fun main() {
          do {
             println("RONDA $i: ")
             for (i in 0..3){
+               println("COLOR ${i+1}:")
                var userSelection = scanner.next()
                if (userSelection!="vermell" && userSelection!="verd" && userSelection!="groc" && userSelection!="blau" && userSelection!="lila" || userSelection in userSequence){
                   do {
@@ -196,23 +179,14 @@ fun main() {
          }while (sequenceConfirmation!="SI")
          println()
          for (i in 0..3){
-            var position: Int
-            if (userSequence[i] == sequencia[i]) position=2
-            else if (userSequence[i] in sequencia) position = 1
-            else position = 0
-            when (position){
-               0-> userComprovationsList.add("×")
-               1-> userComprovationsList.add("Ø")
-               2-> userComprovationsList.add("O")
-            }
-         }
-         for (i in 0..3){
-            if (userSequence[i]==sequencia[i]) correctSequencia+=1
+            if (userSequence[i] == sequencia[i]) userComprovationsList.add("✅")
+            else if (userSequence[i] in sequencia) userComprovationsList.add("\uD83D\uDD01")
+            else userComprovationsList.add("❎")
          }
          println()
          times+=1
          interficie(userName, times, userComprovationsList, userSelectionsList)
-         if (correctSequencia==4) {
+         if (userSequence contentEquals sequencia) {
             restart = finalWin(true)
             break
          }
@@ -220,7 +194,6 @@ fun main() {
             restart = finalWin(false)
             break
          }
-
       }
    }while (restart!="EXIT" && restart!="EXIT")
    //-----------------------------------------------------------------------------------------
