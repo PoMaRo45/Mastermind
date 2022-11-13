@@ -139,15 +139,14 @@ fun main() {
          colores[rnd]= "used"
       }
    }
-   for (i in 0..3){
-      println(sequencia[i])
-   }
    //--------------------------------------------------------------------------------------------
    // RONDAS DE PARTIDA -------------------------------------------------------------------------
    do{
       userSelectionsList = mutableListOf()
+      userComprovationsList = mutableListOf()
       var restart = ""
       var userSequence: Array<String>
+      times=0
       for (i in 1..5){
          var correctSequencia=0
          userSequence= arrayOf("","","","")
