@@ -9,6 +9,11 @@ const val BLUE = "\u001B[34m"
 const val GREEN = "\u001B[32m"
 const val YELLOW = "\u001B[33m"
 const val FANTASY = "\u001B[48;5;240m"
+
+/**
+ * That funtion print on the terminal the instructions of the Masetermind.
+ *
+ */
 fun instrucciones(){
    println ("!! MasterMind ¡¡\n")
    println ("Abans de començar a jugar farem una breu explicació de com funciona el joc:")
@@ -32,6 +37,17 @@ fun instrucciones(){
            "en cas de que volguis corregir algo abans d'enviar la jugada haurás d'escriure RETURN sino CONFIRM.")
 
 }
+
+/**
+ * Creates a visual box of tabs that have a background color to simulate an interface of the videogames rounds
+ * counting the round which is playing the user and then printing the userName, the user's selection and the verification of the selection's from a list.
+ *
+ * @param {userName} string THe name of whose playing
+ * @param {times} number The round that's playing the user
+ * @param {userComprovationsList} List<String> The list that contains the symbols of the comprovations
+ * @param {userSelectionsList} List<String> The list that contains every selection of the user on the match
+ *
+ */
 fun interficie(userName:String, times:Int, userComprovationsList:MutableList<String>, userSelectionsList:MutableList<String>){
    var iterator=0
    println(FANTASY + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
@@ -65,10 +81,18 @@ fun interficie(userName:String, times:Int, userComprovationsList:MutableList<Str
       println(FANTASY + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
    }
 }
-fun finalWin(n:Boolean):String{
+
+/**
+ *  Depends of the results of the match gets a different boolean which do that print differents thing's,
+ *  then ask you if you want to replay the game and returns to the main the users answer.
+ *
+ *  @param {win} boolean Determines the text that's went to print
+ *  @return {final} Returns a string of the user's answer
+ */
+fun final(win:Boolean):String{
    val scanner=Scanner(System.`in`).useLocale(Locale.UK)
    println()
-   if (n){
+   if (win){
       println("\n Has encertat enhorabona!! \n " +
               "Si vols tornar a jugar NEW, si vols sortir EXIT.")
    }
@@ -76,17 +100,23 @@ fun finalWin(n:Boolean):String{
       println("\n Has perdut :( \n " +
               "Si vols tornar a jugar NEW, si vols sortir EXIT.")
    }
-   var finalWin = scanner.next()
-   if(finalWin != "NEW" && finalWin != "EXIT"){
+   var final = scanner.next()
+   if(final != "NEW" && final != "EXIT"){
       do {
          println("Introdueix una de les opcions")
-         finalWin=scanner.next()
-      }while (finalWin != "NEW" && finalWin != "EXIT")
+         final=scanner.next()
+      }while (final != "NEW" && final != "EXIT")
    }
-   return(finalWin)
+   return(final)
 }
-fun colores(n:String){
-   when(n){
+
+/**
+ * Gets the color selectioned from the user and prints a color emote
+ *
+ * @param {userSelection} string The name of the color selectioned for the user
+ */
+fun colores(userSelection:String){
+   when(userSelection){
       "vermell" -> print("\uD83D\uDD34 ")
       "groc" -> print( "\uD83D\uDFE1 ")
       "blau" -> print( "\uD83D\uDD35 ")
@@ -121,27 +151,31 @@ fun main() {
       }
    }while (start!="CONTINUE" && !instructions)
 
-   //GENERADOR DE LA SEQUENCIA-------------------------------------------------------------------------------
-   var colores = arrayOf("vermell","verd", "groc", "blau", "lila")
-   var rnd: Int
-   var sequencia = arrayOf<String>("","","","")
-   for (i in 0..3){
-      rnd = (0..4).random()
-      if (colores[rnd]=="used"){
-         do {
-            rnd = (0..4).random()
-            sequencia[i]= colores[rnd]
-         }while (colores[rnd]=="used")
-         colores[rnd]= "used"
-      }
-      else {
-         sequencia[i]= colores[rnd]
-         colores[rnd]= "used"
-      }
-   }
-   //--------------------------------------------------------------------------------------------
-   // RONDAS DE PARTIDA -------------------------------------------------------------------------
+
+
+
+
    do{
+      //GENERADOR DE LA SEQUENCIA-------------------------------------------------------------------------------
+      var colores = arrayOf("vermell","verd", "groc", "blau", "lila")
+      var rnd: Int
+      var sequencia = arrayOf<String>("","","","")
+      for (i in 0..3){
+         rnd = (0..4).random()
+         if (colores[rnd]=="used"){
+            do {
+               rnd = (0..4).random()
+               sequencia[i]= colores[rnd]
+            }while (colores[rnd]=="used")
+            colores[rnd]= "used"
+         }
+         else {
+            sequencia[i]= colores[rnd]
+            colores[rnd]= "used"
+         }
+      }
+      //--------------------------------------------------------------------------------------------
+      // RONDAS DE PARTIDA -------------------------------------------------------------------------
       userSelectionsList = mutableListOf()
       userComprovationsList = mutableListOf()
       var restart = ""
@@ -186,11 +220,11 @@ fun main() {
          times+=1
          interficie(userName, times, userComprovationsList, userSelectionsList)
          if (userSequence contentEquals sequencia) {
-            restart = finalWin(true)
+            restart = final(true)
             break
          }
          if (i==5){
-            restart = finalWin(false)
+            restart = final(false)
             break
          }
       }
