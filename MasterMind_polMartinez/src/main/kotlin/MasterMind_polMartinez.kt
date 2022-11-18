@@ -52,7 +52,7 @@ fun interficie(userName:String, times:Int, userComprovationsList:MutableList<Str
    var iterator=0
    println(FANTASY + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
    println(FANTASY + "\t" + RESET + "\t\t\t\t\t\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
-   println(FANTASY + "\t" + RESET + "\t\t\t\t\t$userName\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
+   println(FANTASY + "\t" + RESET + "\t\t\t\t\t  $userName\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
    println(FANTASY + "\t" + RESET + "\t\t\t\t\t\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
    println(FANTASY + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
 
@@ -100,14 +100,14 @@ fun final(win:Boolean):String{
       println("\n Has perdut :( \n " +
               "Si vols tornar a jugar NEW, si vols sortir EXIT.")
    }
-   var final = scanner.next()
+   var final = scanner.next().uppercase()
    if(final != "NEW" && final != "EXIT"){
       do {
          println("Introdueix una de les opcions")
-         final=scanner.next()
+         final=scanner.next().uppercase()
       }while (final != "NEW" && final != "EXIT")
    }
-   return(final)
+   return(final.uppercase())
 }
 
 /**
@@ -134,12 +134,12 @@ fun main() {
    println("Benvingut $userName a Mastermind \n Per començar a jugar introdueix CONTINUE, si no saps jugar introdueix HELP")
    do {
       var instructions=false
-      val start=scanner.next()
+      val start=scanner.next().uppercase()
       if (start=="HELP"){
          instrucciones()
          println("\n Introdueix CONTINUE cuan estiguis preparat")
          do {
-            val enter = scanner.next()
+            val enter = scanner.next().uppercase()
             if (enter!="CONTINUE") {
                println("Introdueix CONTINUE cuan estiguis preparat")
             }
@@ -181,8 +181,7 @@ fun main() {
       var restart = ""
       var userSequence: Array<String>
       times=0
-      for (i in 1..5){
-         var correctSequencia=0
+      for (i in 1..6){
          userSequence= arrayOf("","","","")
          do {
             println("RONDA $i: ")
@@ -202,7 +201,7 @@ fun main() {
                colores(userSequence[i])
             }
             println("\n Es aquesta la seqüéncia que volias posar? \n Escriu SI / NO")
-            var sequenceConfirmation=scanner.next()
+            var sequenceConfirmation=scanner.next().uppercase()
             if(sequenceConfirmation!="SI" && sequenceConfirmation!="NO"){
                do {
                   println("Introdueix una de les opcions")
@@ -223,7 +222,7 @@ fun main() {
             restart = final(true)
             break
          }
-         if (i==5){
+         if (i==6){
             restart = final(false)
             break
          }
