@@ -42,11 +42,6 @@ fun instrucciones(){
  * Creates a visual box of tabs that have a background color to simulate an interface of the videogames rounds
  * counting the round which is playing the user and then printing the userName, the user's selection and the verification of the selection's from a list.
  *
- * @param {userName} string THe name of whose playing
- * @param {times} number The round that's playing the user
- * @param {userComprovationsList} List<String> The list that contains the symbols of the comprovations
- * @param {userSelectionsList} List<String> The list that contains every selection of the user on the match
- *
  */
 fun interficie(userName:String, times:Int, userComprovationsList:MutableList<String>, userSelectionsList:MutableList<String>){
    var iterator=0
@@ -124,6 +119,11 @@ fun colores(userSelection:String){
       "verd" -> print( "\uD83D\uDFE2 ")
    }
 }
+
+/**
+ *
+ *
+ */
 fun main() {
    val scanner=Scanner(System.`in`).useLocale(Locale.UK)
    var userSelectionsList: MutableList<String> = mutableListOf()
@@ -150,10 +150,6 @@ fun main() {
          println("Per començar a jugar introdueix CONTINUE, si no saps jugar introdueix HELP")
       }
    }while (start!="CONTINUE" && !instructions)
-
-
-
-
 
    do{
       //GENERADOR DE LA SEQUENCIA-------------------------------------------------------------------------------
