@@ -1,13 +1,8 @@
 //Projecte MasterMind
-//Author:Pol Martínez
+//Author : Pol Martínez
 import java.util.*
 
-const val RED = "\u001B[31m"
 const val RESET = "\u001B[0m"
-const val PURPLE = "\u001B[35m"
-const val BLUE = "\u001B[34m"
-const val GREEN = "\u001B[32m"
-const val YELLOW = "\u001B[33m"
 const val FANTASY = "\u001B[48;5;240m"
 
 /**
@@ -42,10 +37,14 @@ fun instrucciones(){
  * Creates a visual box of tabs that have a background color to simulate an interface of the videogames rounds
  * counting the round which is playing the user and then printing the userName, the user's selection and the verification of the selection's from a list.
  *
+ * @param {userName} string THe name of whose playing.
+ * @param {times} number The round that's playing the user.
+ * @param {userComprovationsList} List<String> The list that contains the symbols of the comprovations.
+ * @param {userSelectionsList} List<String> The list that contains every selection of the user on the match.
+ *
  */
-fun interficie(userName:String, times:Int, userComprovationsList:MutableList<String>, userSelectionsList:MutableList<String>){
-   var iterator=0
-   println(FANTASY + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
+fun interficie(userName:String, times:Int, userComprovationsList:MutableList<MutableList<String>>, userSelectionsList:MutableList<MutableList<String>>){
+   println(FANTASY + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET)
    println(FANTASY + "\t" + RESET + "\t\t\t\t\t\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
    println(FANTASY + "\t" + RESET + "\t\t\t\t\t  $userName\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
    println(FANTASY + "\t" + RESET + "\t\t\t\t\t\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
@@ -55,20 +54,16 @@ fun interficie(userName:String, times:Int, userComprovationsList:MutableList<Str
       println(FANTASY + "\t" + RESET + "\t\t\t\t" +FANTASY +"\t"+ RESET + "\t\t\t\t\t\t\t" + FANTASY + "\t" + RESET)
       print(FANTASY + "\t" + RESET)
       print("  ")
-      iterator=i*4
-      for (i in 0..3){
-         print("${ userComprovationsList[iterator] } ")
-         iterator+=1
+      for (j in 0..3){
+         print("${ userComprovationsList[i][j] } ")
       }
-      iterator=i*4
       print("\t")
       print(FANTASY +" \t"+ RESET )
       print("  ")
-      for (i in 0 .. 3){
+      for (j in 0 .. 3){
          print("  ")
-         colores(userSelectionsList[iterator])
+         colores(userSelectionsList[i][j])
          print(" ")
-         iterator+=1
       }
       print("\t")
       println(FANTASY + " \t" + RESET)
@@ -76,6 +71,7 @@ fun interficie(userName:String, times:Int, userComprovationsList:MutableList<Str
       println(FANTASY + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + RESET )
    }
 }
+
 
 /**
  *  Depends of the results of the match gets a different boolean which do that print differents thing's,
@@ -102,7 +98,7 @@ fun final(win:Boolean):String{
          final=scanner.next().uppercase()
       }while (final != "NEW" && final != "EXIT")
    }
-   return(final.uppercase())
+   return(final)
 }
 
 /**
@@ -121,27 +117,37 @@ fun colores(userSelection:String){
 }
 
 /**
- *
- *
+ * The function main is where all the game is executed, here there are three parts, first the welcome to the user,
+ * second the sequence generator and the last the user match.
  */
 fun main() {
-   val scanner=Scanner(System.`in`).useLocale(Locale.UK)
-   var userSelectionsList: MutableList<String> = mutableListOf()
-   var userComprovationsList: MutableList<String> = mutableListOf()
-   var times =0
+   val scanner = Scanner(System.`in`).useLocale(Locale.UK)
+   var userSelectionsList : MutableList<MutableList<String>>
+   var userComprovationsList : MutableList<MutableList<String>>
+   var times:Int
+   var userSelection:String
+
    println("Introdueix un username de 5 caracters:")
-   val userName= scanner.next()
+   var userName = scanner.next()
+   if (userName.length != 5){
+      do {
+         println("Introdueix un username de 5 caracters:")
+         userName = scanner.next()
+      }while (userName.length != 5)
+   }
+   // BENVINGUDA A L'USUARI ----------------------------------------------------------------------------------
    println("Benvingut $userName a Mastermind \n Per començar a jugar introdueix CONTINUE, si no saps jugar introdueix HELP")
    do {
       var instructions=false
       val start=scanner.next().uppercase()
       if (start=="HELP"){
          instrucciones()
-         println("\n Introdueix CONTINUE cuan estiguis preparat")
+
+         println("\n\n Introdueix CONTINUE quan estiguis preparat")
          do {
             val enter = scanner.next().uppercase()
             if (enter!="CONTINUE") {
-               println("Introdueix CONTINUE cuan estiguis preparat")
+               println("Introdueix CONTINUE quan estiguis preparat")
             }
          }while (enter!= "CONTINUE")
          instructions=true
@@ -150,12 +156,12 @@ fun main() {
          println("Per començar a jugar introdueix CONTINUE, si no saps jugar introdueix HELP")
       }
    }while (start!="CONTINUE" && !instructions)
-
+   //--------------------------------------------------------------------------------------------------------
    do{
-      //GENERADOR DE LA SEQUENCIA-------------------------------------------------------------------------------
-      var colores = arrayOf("vermell","verd", "groc", "blau", "lila")
+      //GENERADOR DE LA SEQÜENCIA-------------------------------------------------------------------------------
+      var colores = mutableListOf("vermell","verd", "groc", "blau", "lila")
       var rnd: Int
-      var sequencia = arrayOf<String>("","","","")
+      var sequencia = MutableList(4) {""}
       for (i in 0..3){
          rnd = (0..4).random()
          if (colores[rnd]=="used"){
@@ -170,59 +176,58 @@ fun main() {
             colores[rnd]= "used"
          }
       }
-      //--------------------------------------------------------------------------------------------
-      // RONDAS DE PARTIDA -------------------------------------------------------------------------
+      //----------------------------------------------------------------------------------------------------------
+      // RONDAS DE PARTIDA ---------------------------------------------------------------------------------------
       userSelectionsList = mutableListOf()
       userComprovationsList = mutableListOf()
+      colores = mutableListOf("vermell","verd", "groc", "blau", "lila")
       var restart = ""
-      var userSequence: Array<String>
-      times=0
-      for (i in 1..6){
-         userSequence= arrayOf("","","","")
+      times = 0
+      for (i in 0..5){
+         userComprovationsList.add(mutableListOf())
+         userSelectionsList.add(mutableListOf())
          do {
-            println("RONDA $i: ")
-            for (i in 0..3){
-               println("COLOR ${i+1}:")
-               var userSelection = scanner.next()
-               if (userSelection!="vermell" && userSelection!="verd" && userSelection!="groc" && userSelection!="blau" && userSelection!="lila" || userSelection in userSequence){
+            println("RONDA ${i+1}: ")
+            for (j in 0..3){
+               println("COLOR ${j+1}:")
+               userSelection = scanner.next()
+               if (!(colores.contains(userSelection)) || userSelection in userSelectionsList[i]) {
                   do {
                      println("Introdueix un color vàlid o que no hagis introduit a la ronda")
                      userSelection = scanner.next()
-                  } while (userSelection!="vermell" && userSelection!="verd" && userSelection!="groc" && userSelection!="blau" && userSelection!="lila" || userSelection in userSequence)
+                  }while (!(colores.contains(userSelection)) || userSelection in userSelectionsList[i])
                }
-               userSequence[i]=userSelection
-               userSelectionsList.add(userSelection)
+               userSelectionsList[i].add(userSelection)
             }
-            for (i in 0..3){
-               colores(userSequence[i])
+            for (j in 0..3){
+               colores(userSelectionsList[i][j])
             }
             println("\n Es aquesta la seqüéncia que volias posar? \n Escriu SI / NO")
-            var sequenceConfirmation=scanner.next().uppercase()
-            if(sequenceConfirmation!="SI" && sequenceConfirmation!="NO"){
+            var sentenceConfirmation = scanner.next().uppercase()
+            if(sentenceConfirmation!="SI" && sentenceConfirmation!="NO"){
                do {
                   println("Introdueix una de les opcions")
-                  sequenceConfirmation=scanner.next()
-               }while (sequenceConfirmation!="SI" && sequenceConfirmation!="NO")
+                  sentenceConfirmation=scanner.next()
+               }while (sentenceConfirmation!="SI" && sentenceConfirmation!="NO")
             }
-         }while (sequenceConfirmation!="SI")
+         }while (sentenceConfirmation!="SI")
          println()
-         for (i in 0..3){
-            if (userSequence[i] == sequencia[i]) userComprovationsList.add("✅")
-            else if (userSequence[i] in sequencia) userComprovationsList.add("\uD83D\uDD01")
-            else userComprovationsList.add("❎")
+         for (j in 0..3){
+            if (userSelectionsList[i][j] == sequencia[j]) userComprovationsList[i].add("✅")
+            else if (userSelectionsList[i][j] in sequencia) userComprovationsList[i].add("\uD83D\uDD01")
+            else userComprovationsList[i].add("❎")
          }
          println()
          times+=1
          interficie(userName, times, userComprovationsList, userSelectionsList)
-         if (userSequence contentEquals sequencia) {
+         if (userSelectionsList[i] == sequencia) {
             restart = final(true)
             break
          }
-         if (i==6){
+         if (i==5){
             restart = final(false)
-            break
          }
       }
    }while (restart!="EXIT" && restart!="EXIT")
-   //-----------------------------------------------------------------------------------------
+   //-------------------------------------------------------------------------------------------------------
 }
