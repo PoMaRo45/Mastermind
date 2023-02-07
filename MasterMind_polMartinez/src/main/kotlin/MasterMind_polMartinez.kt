@@ -616,7 +616,7 @@ fun main() {
                              "Si vols tornar a jugar NEW, si vols sortir EXIT.")
                      val final = scanner.next().uppercase()
                      restart = inputChecker(2, final, "Introdueix una de les opcions", "NEW", "EXIT")
-                     File("src/main/kotlin/DATA/historial.txt").appendText(formaterToSave(userName, menuSelection.toInt(), i, firstDate))
+                     File("src/main/kotlin/DATA/historial.txt").appendText(formaterToSave(userName, menuSelection.toInt(), i+1, firstDate))
                      break
                   }
                   if (i==rondas){
@@ -624,7 +624,7 @@ fun main() {
                              "Si vols tornar a jugar NEW, si vols sortir EXIT.")
                      val final = scanner.next().uppercase()
                      restart = inputChecker(2, final, "Introdueix una de les opcions", "NEW", "EXIT")
-                     File("src/main/kotlin/DATA/historial.txt").appendText(formaterToSave(userName, menuSelection.toInt(), i, firstDate))
+                     File("src/main/kotlin/DATA/historial.txt").appendText(formaterToSave(userName, menuSelection.toInt(), i+1, firstDate))
                   }
                }
             }while (restart.uppercase() != "EXIT")
