@@ -679,6 +679,7 @@ fun main() {
                else println("$BACK_YELLOW$BLACK$bold ${"No hi han dades sobre cap partida realitzada".uppercase()} $RESET\n")
             } while (rankingSelection != "4")
          }
+         "7"-> {}
          else -> {
             println("Has d'introduir una de les opcions del menú")
          }
